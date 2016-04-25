@@ -1,17 +1,12 @@
 package cn.mlworks.jconcurrency;
 
-import java.util.concurrent.TimeUnit;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Ryan on 2016-04-21.
@@ -25,6 +20,13 @@ public class VolatileLoadStoreBenchmark {
 
     private static volatile int x = 0;
     private static int y = 0;
+
+    public static void main(String[] args) throws RunnerException {
+        Options options = new OptionsBuilder()
+                .include(VolatileLoadStoreBenchmark.class.getSimpleName())
+                .build();
+        new Runner(options).run();
+    }
 
     @Benchmark
     public int measureNormalLoad() {
@@ -44,13 +46,6 @@ public class VolatileLoadStoreBenchmark {
     @Benchmark
     public void measureVolatileStore() {
         x = 3;
-    }
-
-    public static void main(String[] args) throws RunnerException {
-        Options options = new OptionsBuilder()
-            .include(VolatileLoadStoreBenchmark.class.getSimpleName())
-            .build();
-        new Runner(options).run();
     }
 
 }
